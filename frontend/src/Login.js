@@ -9,7 +9,7 @@ function Login() {
             <form action=''>
                 <div className='mb-3'>
                     <label htmlFor='email'><strong>Email</strong></label>
-                    <input type='email' placeholder='Enter Email' className='form-control rounded-0'/> {/*bootstrap class to clean up layout of the loging section*/} 
+                    <input type='email' placeholder='Enter Email or Username' className='form-control rounded-0'/> {/*bootstrap class to clean up layout of the loging section*/} 
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='password'><strong>Password</strong></label>
@@ -19,7 +19,7 @@ function Login() {
                 <div className='form-check'>
                     <input className='form-check-input' type='checkbox' value="" id='flexCheckDefault'/>
                     <label className='form-check-label' for="flexCheckDefault">
-                    I have read and agree to the Terms of Use and Privacy Policy
+                    Stay Signed In
                     </label>
                 </div>
                 
