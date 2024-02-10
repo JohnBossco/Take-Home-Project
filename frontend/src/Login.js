@@ -1,19 +1,43 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
+import Validation from"./LoginValidation"
 
 
 function Login() {
-  return (
-    <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
+  
+    const [values, setValues] = useState({ 
+        email: "",   
+        password: ""
+    })  /* set object values for both email and password that can later be updated */
+
+    const [errors, setErrors] = useState({})
+    const handleInput = (event) => {
+        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates  the state using setValues
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setErrors(Validation(values));
+    }
+  
+
+    return (
+    <div className='d-flex justify-content-center align-items-center bg-primary vh-100'> {/*bootstrap class to clean up layout of the login section*/}
         <div className='bg-white p-3 rounded w-25'>
-            <form action=''>
+            <h2><strong>Sign in</strong></h2>
+            <form action='' onSubmit={handleSubmit}>
                 <div className='mb-3'>
                     <label htmlFor='email'><strong>Email</strong></label>
-                    <input type='email' placeholder='Enter Email or Username' className='form-control rounded-0'/> {/*bootstrap class to clean up layout of the loging section*/} 
+                    <input type='email' placeholder='Enter Email or Username' 
+                    onChange={handleInput} className='form-control rounded-0' name='email'/>  
+                    {errors.email && <span className="text-danger" >{errors.email}</span>}
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='password'><strong>Password</strong></label>
-                    <input type='password' placeholder='Enter Password' className='form-control rounded-0'/> 
+                    <input type='password' placeholder='Enter Password' 
+                    onChange={handleInput} className='form-control rounded-0' name='password'/> 
+                    {errors.password && <span className="text-danger" >{errors.password}</span>}
+
                 </div>
                 <button className='btn btn-success w-100'>Login</button>
                 <div className='form-check'>

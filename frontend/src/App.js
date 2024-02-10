@@ -8,8 +8,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login />}> </Route>
-        <Route path='/signup' element={<Signup />}> </Route>
+        <Route path='/' element={<Login />}> </Route> {/*These route is the home pafe */}
+        <Route path='/signup' element={<Signup />}> </Route> {/*this route allows the change to sign up page */} 
       </Routes>
     </BrowserRouter>
     

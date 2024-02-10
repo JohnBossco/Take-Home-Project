@@ -6,6 +6,7 @@ function Signup() {
   return  (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
         <div className='bg-white p-3 rounded w-25'>
+            <h2><strong>Sign-Up</strong></h2>
             <form action=''>
                 <div className='mb-3'>
                     <label htmlFor='email'><strong>Username</strong></label>
@@ -19,7 +20,7 @@ function Signup() {
                     <label htmlFor='password'><strong>Email</strong></label>
                     <input type='password' placeholder='Enter Email' className='form-control rounded-0'/> 
                 </div>
-                <button className='btn btn-success w-100'>Login</button>
+                <button className='btn btn-success w-100'>Create Account</button>
                 <div className='form-check'>
                     <input className='form-check-input' type='checkbox' value="" id='flexCheckDefault'/>
                     <label className='form-check-label' for="flexCheckDefault">
@@ -27,7 +28,7 @@ function Signup() {
                     </label>
                 </div>
                 
-                <Link to="/signup" className='btn btn-info border w-100 rounded-0 text-decoration-none'>Create Account</Link>
+                <Link to="/" className='btn border w-100 rounded-0 text-decoration-none'>Sign in</Link>
             </form>
         </div>
     </div>
