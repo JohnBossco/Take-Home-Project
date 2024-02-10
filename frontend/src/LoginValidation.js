@@ -8,19 +8,21 @@ function Validation (values){
 
     if(values.email === ""){
         error.email = "Email Should not be empty"
-    }
+    } //if email is blank this error message will appear
     else if(!emailPattern.test(values.email)){
         error.email = "Email didn't match"
-    }
+    }//if email is not empty but incorrect this error message will appear
     else{
         error.email = ""
     }
 
     if(values.password === ""){
         error.password = "Password Should not be empty"
-    }else if(!passwordPattern.test(values.password)){
+    } //if password is blank this error message will appear
+    else if(!passwordPattern.test(values.password)){
         error.password = "Password didn't match"
-    }else {
+    }//if password wrong this error message will appear
+    else{
         error.password = ""
     }
 
