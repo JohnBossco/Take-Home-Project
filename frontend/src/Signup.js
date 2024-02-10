@@ -13,7 +13,7 @@ function Signup() {
 
     const [errors, setErrors] = useState({})
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.username]: [event.target.value]})) //handles input changes then updates  the state using setValues
+        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates  the state using setValues
     }
 
     const handleSubmit = (event) => {
@@ -28,8 +28,8 @@ function Signup() {
             <h2><strong>Sign-Up</strong></h2>
             <form action='' onSubmit={handleSubmit}>
                 <div className='mb-3'>
-                    <label htmlFor='email'><strong>Username</strong></label>
-                    <input type='email' placeholder='Create Username' 
+                    <label htmlFor='username'><strong>Username</strong></label>
+                    <input type='text' placeholder='Create Username' 
                     onChange={handleInput} className='form-control rounded-0' name='username'/>
                     {errors.username && <span className="text-danger" >{errors.username}</span>} 
                 </div>
@@ -40,8 +40,8 @@ function Signup() {
                     {errors.password && <span className="text-danger" >{errors.password}</span>} 
                 </div>
                 <div className='mb-3'>
-                    <label htmlFor='password'><strong>Email</strong></label>
-                    <input type='password' placeholder='Enter Email' 
+                    <label htmlFor='email'><strong>Email</strong></label>
+                    <input type='email' placeholder='Enter Email' 
                     onChange={handleInput} className='form-control rounded-0' name = "email"/>
                     {errors.email && <span className="text-danger" >{errors.email}</span>} 
                 </div>

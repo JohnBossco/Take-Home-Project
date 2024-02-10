@@ -7,7 +7,7 @@ function Validation (values){
     let passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/ //Also Regex that needs to match one digit one lowercase letter one uppercase letter and at least 8 characters long
 
     if(values.email === ""){
-        error.email = "Email Should not be empty"
+        error.email = "This field is required"
     } //if email is blank this error message will appear
     else if(!emailPattern.test(values.email)){
         error.email = "Email didn't match"
