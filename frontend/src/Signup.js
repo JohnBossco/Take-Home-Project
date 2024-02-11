@@ -6,32 +6,28 @@ import axios from 'axios'
  
 function Signup() {
  
-    const [values, setValues] = useState({ 
-        username: "",
-        email: "",   
-        password: ""
-    })  /* set object values for both email and password, and username that can later be updated */
+    const [username, setUserName] = useState("") 
+    const [password, setPassword] = useState("") 
+    const [email, setEmail] = useState("") 
 
     const navigate = useNavigate();
 
     const [errors, setErrors] = useState({})
-    const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates the state using setValues
-    }
 
-    const handleSubmit = (event) => {
+      const handleSubmit = (event) => {
+        // console.log(values)
         event.preventDefault();
-        setErrors(Validation(values));
+        setErrors(Validation(username, email,password));
+        // console.log(values);
         if (errors.username === "" && errors.email === "" && errors.password === "") {
-             axios.post('http://localhost:8081/signup', values)
-            .then(res => {
+             axios.post('http://localhost:8081/signup', {username: username, email: email, password: password})
+            .then((data) => {
                 navigate('/');
+                console.log(data);
             })
             .catch(err => console.log(err))
-        }
-    }
-
-
+        }}
+    
     return  (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
         <div className='bg-white p-3 rounded w-25'>
@@ -39,20 +35,20 @@ function Signup() {
             <form action='' onSubmit={handleSubmit}>
                 <div className='mb-3'>
                     <label htmlFor='username'><strong>Username</strong></label>
-                    <input type='text' placeholder='Create Username' 
-                    onChange={handleInput} className='form-control rounded-0' name='username'/>
+                    <input type='text' placeholder='Create Username' value={username}
+                    onChange={(e) => setUserName(e.target.value)} className='form-control rounded-0' name='username'/>
                     {errors.username && <span className="text-danger" >{errors.username}</span>} 
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='password'><strong>Password</strong></label>
-                    <input type='password' placeholder='Create Password' 
-                    onChange={handleInput} className='form-control rounded-0' name="password"/>
+                    <input type='password' placeholder='Create Password' value={password}
+                    onChange={(e) => setPassword(e.target.value)} className='form-control rounded-0' name="password"/>
                     {errors.password && <span className="text-danger" >{errors.password}</span>} 
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='email'><strong>Email</strong></label>
-                    <input type='email' placeholder='Enter Email' 
-                    onChange={handleInput} className='form-control rounded-0' name = "email"/>
+                    <input type='email' placeholder='Enter Email' value={email}
+                    onChange={(e) => setEmail(e.target.value)} className='form-control rounded-0' name = "email"/>
                     {errors.email && <span className="text-danger" >{errors.email}</span>} 
                 </div>
                 <button type='submit' className='btn btn-success w-100'>Create Account</button>

@@ -1,75 +1,40 @@
-const express = require('express');
-const mysql = require('mysql');
-const cors = require('cors');
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const mysql = require('mysql')
+const bodyParser = require('body-parser')
 
-const app = express();
-
-app.use(cors());
-app.use(express.json())
-
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
+app.use(cors())
 
 const db = mysql.createPool({
-    connectionLimit: 10,
-    host: "localhost",
-    user: "root",
-    password: "@Edward352",
-    database: "signup"
+    connectionLimit : 10,
+    host : 'localhost',
+    user : 'root',
+    password : '@Edward352',
+    database : 'signup'
 })
 
+app.post('/signup', (req, res) => {
+    const username = req.body.username
+    const email = req.body.email
+    const password = req.body.password
 
+    console.log(username, email, password)
 
-app.post('/signup', (req,res) => {
-    const sql = "INSERT INTO login (`username`,`password`,`email`) VALUES (?)";
-    const values = [
-        req.body.username,
-        req.body.password,
-        req.body.email
-    ] 
-    db.query(sql, [values], (err, data) => {
+    db.query("INSERT INTO login (username, email, password) VALUES (?, ?, ?)", [username, email, password], (err, result) => {
         if (err) {
-            return res.json("Error")
+            console.log(err)
+        } else {
+            res.send({username: username})
         }
-        console.log(_data)
-        return res.json(data)
     })
 })
 
-
-
-
-app.listen(8081, () => {
-    console.log("Backend Server")
+app.listen(8081, ()  => {
+    console.log('server listening on port 8081')
 })
-
-
-
-// app.post('/register', (req,res) => {
-//     const username = req.body.username
-//     const password = req.body.password
-//     const email = req.body.email
-
-//     const query = "INSERT INTO account (username, password, email) VALUES (?,?,?)"
-//     const query2 = "SELECT * FROM account WHERE username = ?"
-
-//     db.query(query2, [username], (err,result) => {
-//         if(err) {throw err}
-//         if(result.length > 0) {
-//             res.send({message: "Username already in use"});
-//         }
-//         if(result.length === 0) {
-//             db.query(query, [username, password,email], (err, result) => {
-//                 if(err) {throw err}
-//                 res.send({message: "User created successfully"})
-//             })
-//          }   
-//        })
-//     }
-
-
-// )
-
-
-
 
 
 
