@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Validation from './SignupValidation'
+import axios from 'axios'
 
  
 function Signup() {
@@ -9,19 +10,28 @@ function Signup() {
         username: "",
         email: "",   
         password: ""
-    })  /* set object values for both email and password that can later be updated */
+    })  /* set object values for both email and password, and username that can later be updated */
+
+    const navigate = useNavigate();
 
     const [errors, setErrors] = useState({})
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates  the state using setValues
+        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates the state using setValues
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         setErrors(Validation(values));
+        if (errors.username === "" && errors.email === "" && errors.password === "") {
+             axios.post('http://localhost:8081/signup', values)
+            .then(res => {
+                navigate('/');
+            })
+            .catch(err => console.log(err))
+        }
     }
-  
- 
+
+
     return  (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
         <div className='bg-white p-3 rounded w-25'>
@@ -48,7 +58,7 @@ function Signup() {
                 <button type='submit' className='btn btn-success w-100'>Create Account</button>
                 <div className='form-check'>
                     <input className='form-check-input' type='checkbox' value="" id='flexCheckDefault'/>
-                    <label className='form-check-label' for="flexCheckDefault">
+                     <label className='form-check-label' htmlFor="flexCheckDefault">
                     I have read and agree to the Terms of Use and Privacy Policy.
                     </label>
                 </div>

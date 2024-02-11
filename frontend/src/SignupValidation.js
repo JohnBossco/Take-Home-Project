@@ -4,8 +4,9 @@ function Validation (values){
 
     let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ //Regex code designed to match a valid email address format checks if string adheres to a pattern  
 
-    let passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/ //Also Regex that needs to match one digit one lowercase letter one uppercase letter and at least 8 characters long
+    let passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,}$/ //Also Regex that needs to match one digit one lowercase letter one uppercase letter and at least 8 characters long
 
+//USERNAME
     if(values.username === ""){
         error.username = "Username should not be empty"
     } //if username is blank this error message will appear
@@ -13,6 +14,7 @@ function Validation (values){
         error.username = ""
     }
 
+//PASSWORD
     if(values.password === ""){
         error.password = "Password should not be empty"
     } //if password is blank this error message will appear
@@ -23,6 +25,7 @@ function Validation (values){
         error.password = ""
     }
 
+//EMAIL    
     if(values.email === ""){
         error.email = "Email Should not be empty"
     } //if email is blank this error message will appear
@@ -32,10 +35,6 @@ function Validation (values){
     else{
         error.email = ""
     }
-
-
-
-
 
     return error;
 }
