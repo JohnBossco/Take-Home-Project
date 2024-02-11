@@ -17,7 +17,7 @@ function Validation (values){
     }
 
     if(values.password === ""){
-        error.password = "Password Should not be empty"
+        error.password = "Password should not be empty"
     } //if password is blank this error message will appear
     else if(!passwordPattern.test(values.password)){
         error.password = "Password didn't match"

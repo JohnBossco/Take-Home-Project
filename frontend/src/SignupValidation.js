@@ -7,14 +7,14 @@ function Validation (values){
     let passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/ //Also Regex that needs to match one digit one lowercase letter one uppercase letter and at least 8 characters long
 
     if(values.username === ""){
-        error.username = "Username Should not be empty"
+        error.username = "Username should not be empty"
     } //if username is blank this error message will appear
         else{
         error.username = ""
     }
 
     if(values.password === ""){
-        error.password = "Password Should not be empty"
+        error.password = "Password should not be empty"
     } //if password is blank this error message will appear
     else if(!passwordPattern.test(values.password)){
         error.password = "Password didn't match"
