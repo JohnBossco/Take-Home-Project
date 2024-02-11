@@ -32,6 +32,26 @@ app.post('/signup', (req, res) => {
     })
 })
 
+app.post('/login', (req, res) => {
+    const email = req.body.email
+    const password = req.body.password
+
+    console.log(email, password)
+
+    db.query("SELECT * FROM login WHERE `email` = ? AND `password` = ?", [email, password], (err, result) => {
+        if (err) {
+            console.log(err)
+        }if(res.length > 0) {
+            return res.json("success")
+        } else {
+            res.send({email: email})
+        }
+    })
+})
+
+
+
+
 app.listen(8081, ()  => {
     console.log('server listening on port 8081')
 })

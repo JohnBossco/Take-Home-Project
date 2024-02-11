@@ -1,25 +1,33 @@
 import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Validation from"./LoginValidation"
-
+import axios from 'axios'
 
 function Login() {
   
-    const [values, setValues] = useState({ 
-        email: "",   
-        password: ""
-    })  /* set object values for both email and password that can later be updated */
+    const [email, setEmail] = useState("") 
+    const [password, setPassword] = useState("")  
+
+    const navigate = useNavigate();
 
     const [errors, setErrors] = useState({})
-    const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]})) //handles input changes then updates  the state using setValues
-    }
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setErrors(Validation(values));
-    }
-  
+
+
+        const handleSubmit = (event) => {
+            event.preventDefault();
+            setErrors(Validation(email,password));
+            if(errors.email === "" && errors.password === ""){
+                axios.post('http://localhost:8081/login', {email: email, password: password})
+                .then((data) => {
+                    
+                    navigate('/home');
+                    
+                    console.log(data);
+                })
+                .catch(err => console.log(err))
+            }}
+    
 
     return (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'> {/*bootstrap class to clean up layout of the login section*/}
@@ -28,14 +36,14 @@ function Login() {
             <form action='' onSubmit={handleSubmit}>
                 <div className='mb-3'>
                     <label htmlFor='email'><strong>Email</strong></label>
-                    <input type='email' placeholder='Enter Email or Username' 
-                    onChange={handleInput} className='form-control rounded-0' name='email'/>  
+                    <input type='email' placeholder='Enter Email or Username' value={email}
+                    onChange={(e) => setEmail(e.target.value)} className='form-control rounded-0' name='email'/>  
                     {errors.email && <span className="text-danger" >{errors.email}</span>}
                 </div>
                 <div className='mb-3'>
                     <label htmlFor='password'><strong>Password</strong></label>
-                    <input type='password' placeholder='Enter Password' 
-                    onChange={handleInput} className='form-control rounded-0' name='password'/> 
+                    <input type='password' placeholder='Enter Password' value={password}
+                    onChange={(e) =>setPassword(e.target.value)} className='form-control rounded-0' name='password'/> 
                     {errors.password && <span className="text-danger" >{errors.password}</span>}
 
                 </div>
