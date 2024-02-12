@@ -1,5 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { FaPlus } from "react-icons/fa";
+import { format } from "date-fns";
+
 
 const Booking = () =>{
   
@@ -8,9 +10,30 @@ const Booking = () =>{
     console.log(e.target.value);
   }
 
+
+  let defaultDate = new Date().toISOString().split("T")[0]
+  console.log(defaultDate)
+
+
+  const [curDeptDate, setDeptDate] = useState(defaultDate)
+  console.log(curDeptDate, setDeptDate)
+  
+
+
+  let almostFix = curDeptDate.split("-").join(",")
+  console.log(almostFix)
+  
+
+
+  let dateFix = format(new Date(almostFix), "M/d/yyyy")
+  console.log(dateFix)
+
+
+
+
   return (
   <div className='md:mt-[160px] mt-[50px] mx-4 relative'>
-    <div className='bg-white rounded-md max-w-6x1 w-full mx-auto'>
+    <div className='bg-white rounded-md max-w-6xl w-full mx-auto'>
         <form className='flex flex-col md:flex-row'>
         
          {/* Name */}
@@ -25,7 +48,7 @@ const Booking = () =>{
           {/* Boarding date */}
           <div className='py-1.5 px-2.5 flex-1 border-r-2'>
             <p><strong>Departure Date</strong></p>
-            <input type='date' name='date' required className='outline-none p-2 w-full'/>
+            <input defaultValue={defaultDate} onChange={(e) => setDeptDate(e.target.value)} type='date' name='date' required className='outline-none p-2 w-full'/>
           </div>          
          
          {/* from  */}
@@ -42,6 +65,12 @@ const Booking = () =>{
             </div>
           </div>
 
+          {/* Arrival Date  */}
+          <div className='py-1.5 px-2.5 flex-1 border-r-2'>
+            <strong><p>Arrival Date</p></strong>
+            <input type='date' name='date' required className='outline-none p-2 w-full'/>
+          </div> 
+
           {/* destination to */}
           <div className='py-1.5 px-2.5 flex-1 border-r-2'>
             <strong><p>Destination To</p></strong>
@@ -57,11 +86,7 @@ const Booking = () =>{
             </div>
           </div>
 
-          {/* Arrival Date  */}
-          <div className='py-1.5 px-2.5 flex-1 border-r-2'>
-            <strong><p>Arrival Date</p></strong>
-            <input type='date' name='date' required className='outline-none p-2 w-full'/>
-          </div> 
+
 
           {/* Book Button */}
           <button onClick={(e) => handleBook(e)} type='submit' className='bg-indigo-500 text-white px-8 py-1 space-x-2 text-c flex items-center justify-center'><FaPlus className='mr=1' />Book Now</button>

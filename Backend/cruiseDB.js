@@ -11,7 +11,7 @@ const pool = createPool({
 })
 
 
-pool.query('select * from shiptimes',(err, results, fields) => {
+pool.query('select * from shiptimes where user_id = ?',[1],(err, results, fields) => {
     if (err) {
         return console.log(err)
     }
