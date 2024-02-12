@@ -12,7 +12,7 @@ function Home() {
     <div className='bg-[url(../src/images/Image-Advisors-noted-that-cruises-of-all-types-are.webp)] bg-cover bg-no-repeat'>
     <Header/>
     <section className='h-screen'>
-      <Booking/>
+    <Booking/>
     </section>
     </div>
     

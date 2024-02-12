@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { format } from "date-fns";
+import axios from "axios";
 
 const Booking = () => {
   const handleBook = (e) => {
     e.preventDefault();
     console.log(e.target.value);
   };
-
-
 
   let defaultDate = new Date().toISOString().split("T")[0];
   // console.log(defaultDate)
@@ -23,12 +22,27 @@ const Booking = () => {
   let almostFix = curDeptDate.split("-").join(",");
   // console.log(almostFix)
 
-  let dateFix = format(new Date(almostFix), "M/d/yyyy");
+  let date = format(new Date(almostFix), "M/d/yyyy");
+  // setDeptDate(dateFix)
   // console.log(dateFix);
 
-  const isItSameDate =  dateFix === defaultFix
+  const isItSameDate =  date === defaultFix;
 
+  const handleChange = (e) => {
+    e.preventDefault();
+    setDeptDate(e.target.value)
+    axios.get(`http://localhost:8081/shiptimes`,{
+      params: {date:date}
+    })
+    .then((results) => {
+    
+      console.log(results)
+      
+    })
 
+    
+    
+  }
 
   return (
     <div className="md:mt-[160px] mt-[50px] mx-4 relative">
@@ -39,7 +53,7 @@ const Booking = () => {
             <p>
               <strong>Enter Name</strong>
             </p>
-            <div>
+            <div >
               <label htmlFor="name"></label>
               <input type="text" id="name" required />
             </div>
@@ -51,7 +65,8 @@ const Booking = () => {
               <strong>Departure Date</strong>
             </p>
             <input
-              onChange={(e) => setDeptDate(e.target.value)}
+              // value={curDeptDate}
+              onChange={handleChange}
               type="date"
               name="date"
               required

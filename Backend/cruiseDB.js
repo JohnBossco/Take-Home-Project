@@ -11,12 +11,15 @@ const pool = createPool({
 })
 
 
-pool.query('select * from shiptimes where user_id = ?',[1],(err, results, fields) => {
+pool.query('SELECT * FROM shiptimes',(err, results, fields) => {
     if (err) {
         return console.log(err)
     }
-    return console.log(results)
-})
+        return console.log(results)
+    })
+
+
+
 
 
 module.exports = pool;

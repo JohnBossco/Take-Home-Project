@@ -16,6 +16,7 @@ const db = mysql.createPool({
     database : 'signup'
 })
 
+
 app.post('/signup', (req, res) => {
     const username = req.body.username
     const email = req.body.email
@@ -49,6 +50,32 @@ app.post('/login', (req, res) => {
     })
 })
 
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '@Edward352',
+    database: 'timetable',
+    connectionLimit: 10
+})
+
+
+app.get('/shiptimes', (req,res) =>{
+    const date = req.query.date 
+    console.log(date)
+    pool.query('select * from shiptimes where date=?',[date],(err, result, fields) => {
+        if (err) {
+            return console.log(err)
+        }
+            console.log(result.length)
+            if(result.length > 0) {
+                res.send(result)
+            }else{
+                return
+            }
+           
+        })
+    
+    })
 
 
 
