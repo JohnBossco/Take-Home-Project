@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { format } from "date-fns";
 import axios from "axios";
@@ -11,13 +11,17 @@ const Booking = () => {
 
   let defaultDate = new Date().toISOString().split("T")[0];
   // console.log(defaultDate)
-
   let defaultFix = defaultDate.split("-").join(",");
       defaultFix = format(new Date(defaultFix), "M/d/yyyy");
   // console.log(defaultFix);
 
   const [curDeptDate, setDeptDate] = useState(defaultDate);
   // console.log(curDeptDate, setDeptDate)
+
+  const [americasA,setAmericasA] = useState("");
+  const [americasB,setAmericasB] = useState("");
+  const [europeA,setEuropeA] = useState("");
+  const [europeB,setEuropeB] = useState("");
 
   let almostFix = curDeptDate.split("-").join(",");
   // console.log(almostFix)
@@ -28,21 +32,35 @@ const Booking = () => {
 
   const isItSameDate =  date === defaultFix;
 
+
+  useEffect(() => {
+
+    if(curDeptDate.length > 0) {
+      axios.get(`http://localhost:8081/shiptimes`,{
+        params: {date:date}
+      })
+      .then((results) => {
+      
+        setAmericasA(results.data[0]["Location Americas A"])
+        setAmericasB(results.data[0]["Location Americas B"])
+        setEuropeA(results.data[0]["Location Europe A"])
+        setEuropeB(results.data[0]["Location Europe B"])
+  
+        // console.log(americasA,americasB,europeA,europeB)
+        
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      }); 
+    }
+  },[curDeptDate])
+
   const handleChange = (e) => {
     e.preventDefault();
     setDeptDate(e.target.value)
-    axios.get(`http://localhost:8081/shiptimes`,{
-      params: {date:date}
-    })
-    .then((results) => {
-    
-      console.log(results)
-      
-    })
-
-    
-    
+  
   }
+
 
   return (
     <div className="md:mt-[160px] mt-[50px] mx-4 relative">
@@ -82,10 +100,10 @@ const Booking = () => {
             <div>
               <select disabled={isItSameDate} name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
-                <option value="">Locations Americas A</option>
-                <option value="">Locations Americas B</option>
-                <option value="">Locations Europe A</option>
-                <option value="">Locations Europe B</option>
+                <option value=""> {americasA}  </option>
+                <option value="">{americasB}</option>
+                <option value="">{europeA}</option>
+                <option value="">{europeB}</option>
               </select>
             </div>
           </div>
