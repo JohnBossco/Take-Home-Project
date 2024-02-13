@@ -16,21 +16,37 @@ const Booking = () => {
   // console.log(defaultFix);
 
   const [curDeptDate, setDeptDate] = useState(defaultDate);
-  // console.log(curDeptDate, setDeptDate)
+  const [curArriveDate,setArriveDate] = useState(defaultDate)  // console.log(curDeptDate, setDeptDate)
 
   const [americasA,setAmericasA] = useState("");
   const [americasB,setAmericasB] = useState("");
   const [europeA,setEuropeA] = useState("");
   const [europeB,setEuropeB] = useState("");
 
-  let almostFix = curDeptDate.split("-").join(",");
-  // console.log(almostFix)
+  const [curAmericasA,setArriveAmericasA] = useState("");
+  const [curAmericasB,setArriveAmericasB] = useState("");
+  const [curEuropeA,setArriveEuropeA] = useState("");
+  const [curEuropeB,setArriveEuropeB] = useState("");
 
-  let date = format(new Date(almostFix), "M/d/yyyy");
+  const [curSelection, setSelection] = useState();
+  console.log(curSelection)
+
+  let almostFixDept = curDeptDate.split("-").join(",");
+  let almostFixArrive = curArriveDate.split("-").join(",");
+
+
+  // console.log(almostFixDept)
+
+  let date = format(new Date(almostFixDept), "M/d/yyyy");
+  let arriveDate = format(new Date(almostFixArrive), "M/d/yyyy");
+
+  
   // setDeptDate(dateFix)
   // console.log(dateFix);
 
   const isItSameDate =  date === defaultFix;
+  const isItSameDateArrive =  arriveDate === defaultFix;
+
 
 
   useEffect(() => {
@@ -45,9 +61,11 @@ const Booking = () => {
         setAmericasB(results.data[0]["Location Americas B"])
         setEuropeA(results.data[0]["Location Europe A"])
         setEuropeB(results.data[0]["Location Europe B"])
-  
-        // console.log(americasA,americasB,europeA,europeB)
-        
+
+        // setDeptDate("")
+
+        console.log(results.data[0])
+        // console.log(americasA,americasB,europeA,europeB)    
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -55,9 +73,38 @@ const Booking = () => {
     }
   },[curDeptDate])
 
-  const handleChange = (e) => {
+  //This use effect is for arrival date
+  useEffect(() => {
+
+    if(curArriveDate.length > 0) {
+      axios.get(`http://localhost:8081/shiptimes`,{
+        params: {date:arriveDate}
+      })
+      .then((results) => {
+      
+        setArriveAmericasA(results.data[0]["Location Americas A"])
+        setArriveAmericasB(results.data[0]["Location Americas B"])
+        setArriveEuropeA(results.data[0]["Location Europe A"])
+        setArriveEuropeB(results.data[0]["Location Europe B"])
+
+        console.log(results.data[0])
+        // console.log(americasA,americasB,europeA,europeB)    
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      }); 
+    }
+  },[curArriveDate])
+
+  const handleChangeDept = (e) => {
     e.preventDefault();
     setDeptDate(e.target.value)
+  
+  }
+
+  const handleChangeArrive = (e) => {
+    e.preventDefault();
+    setArriveDate(e.target.value)
   
   }
 
@@ -84,7 +131,7 @@ const Booking = () => {
             </p>
             <input
               // value={curDeptDate}
-              onChange={handleChange}
+              onChange={handleChangeDept}
               type="date"
               name="date"
               required
@@ -98,12 +145,12 @@ const Booking = () => {
               <p>Destination From</p>
             </strong>
             <div>
-              <select disabled={isItSameDate} name="from" id="from" className="outline-none p-2 w-full">
+              <select onChange={(e) => setSelection(e.target.value)} disabled={isItSameDate} name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
-                <option value=""> {americasA}  </option>
-                <option value="">{americasB}</option>
-                <option value="">{europeA}</option>
-                <option value="">{europeB}</option>
+                <option value="Location Americas A"> {americasA}  </option>
+                <option value="Location Americas B">{americasB}</option>
+                <option value="Location Europe A">{europeA}</option>
+                <option value="Location Europe B">{europeB}</option>
               </select>
             </div>
           </div>
@@ -114,6 +161,7 @@ const Booking = () => {
               <p>Arrival Date</p>
             </strong>
             <input
+              onChange={handleChangeArrive}
               type="date"
               name="date"
               required
@@ -127,12 +175,12 @@ const Booking = () => {
               <p>Destination To</p>
             </strong>
             <div>
-              <select name="from" id="from" className="outline-none p-2 w-full">
+              <select disabled={isItSameDateArrive} name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
-                <option value="">Locations Americas A</option>
-                <option value="">Locations Americas B</option>
-                <option value="">Locations Europe A</option>
-                <option value="">Locations Europe B</option>
+                <option value="Location Americas A">{curAmericasA}</option>
+                <option value="Location Americas B">{curAmericasB}</option>
+                <option value="Location Europe A">{curEuropeA}</option>
+                <option value="Location Europe B">{curEuropeB}</option>
               </select>
             </div>
           </div>
