@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
-import { format } from "date-fns";
+import { format, differenceInDays } from "date-fns";
 import axios from "axios";
 
 const Booking = () => {
@@ -9,24 +9,39 @@ const Booking = () => {
     console.log(e.target.value);
   };
 
+  // console.log(new Date().toISOString());
+
   let defaultDate = new Date().toISOString().split("T")[0];
   // console.log(defaultDate)
   let defaultFix = defaultDate.split("-").join(",");
       defaultFix = format(new Date(defaultFix), "M/d/yyyy");
   // console.log(defaultFix);
 
+ 
+
+
   const [curDeptDate, setDeptDate] = useState(defaultDate);
-  const [curArriveDate,setArriveDate] = useState(defaultDate)  // console.log(curDeptDate, setDeptDate)
+  const [curArriveDate,setArriveDate] = useState(defaultDate)  
+  // console.log(curDeptDate, setDeptDate)
+
+  let deptDiffernce = curDeptDate.split("-").join(",");
+  let arrivalDiffernce = curArriveDate.split("-").join(",")
+
+  let days = differenceInDays(
+    new Date(arrivalDiffernce),
+    new Date(deptDiffernce)
+  )
+
+  let money = (249.99 * days).toFixed(2)
+
+  console.log(money)
 
   const [americasA,setAmericasA] = useState("");
   const [americasB,setAmericasB] = useState("");
   const [europeA,setEuropeA] = useState("");
   const [europeB,setEuropeB] = useState("");
 
-  const [curAmericasA,setArriveAmericasA] = useState("");
-  const [curAmericasB,setArriveAmericasB] = useState("");
-  const [curEuropeA,setArriveEuropeA] = useState("");
-  const [curEuropeB,setArriveEuropeB] = useState("");
+  const [curEndTrip,setEndTrip] = useState("");
 
   const [curSelection, setSelection] = useState();
   console.log(curSelection)
@@ -46,8 +61,6 @@ const Booking = () => {
 
   const isItSameDate =  date === defaultFix;
   const isItSameDateArrive =  arriveDate === defaultFix;
-
-
 
   useEffect(() => {
 
@@ -82,10 +95,7 @@ const Booking = () => {
       })
       .then((results) => {
       
-        setArriveAmericasA(results.data[0]["Location Americas A"])
-        setArriveAmericasB(results.data[0]["Location Americas B"])
-        setArriveEuropeA(results.data[0]["Location Europe A"])
-        setArriveEuropeB(results.data[0]["Location Europe B"])
+        setEndTrip(results.data[0][`${curSelection}`])
 
         console.log(results.data[0])
         // console.log(americasA,americasB,europeA,europeB)    
@@ -142,7 +152,7 @@ const Booking = () => {
           {/* Destination from  */}
           <div className="py-1.5 px-2.5 flex-1 border-r-2">
             <strong>
-              <p>Destination From</p>
+              <p>Departing From</p>
             </strong>
             <div>
               <select onChange={(e) => setSelection(e.target.value)} disabled={isItSameDate} name="from" id="from" className="outline-none p-2 w-full">
@@ -177,11 +187,18 @@ const Booking = () => {
             <div>
               <select disabled={isItSameDateArrive} name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
-                <option value="Location Americas A">{curAmericasA}</option>
-                <option value="Location Americas B">{curAmericasB}</option>
-                <option value="Location Europe A">{curEuropeA}</option>
-                <option value="Location Europe B">{curEuropeB}</option>
+                <option value="Location Americas A">{curEndTrip}</option>
               </select>
+            </div>
+          </div>
+
+          {/* Total Amount */}
+          <div className="py-1.5 px-2.5 flex-1 border-r-2">
+            <p>
+              <strong>Total Price</strong>
+            </p>
+            <div>
+              <div><strong>${money}</strong></div>
             </div>
           </div>
 
