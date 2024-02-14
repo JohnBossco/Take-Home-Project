@@ -17,8 +17,10 @@ function Signup() {
       const handleSubmit = (event) => {
         // console.log(values)
         event.preventDefault();
-        setErrors(Validation(username, email,password));
-        // console.log(values);
+        setErrors(Validation(username, email,password)); // console.log(values);
+        
+        /* The if checks that if after putting signup information and it comes back empty string for all info
+           it can proceed to post the information to the  database*/
         if (errors.username === "" && errors.email === "" && errors.password === "") {
              axios.post('http://localhost:8081/signup', {username: username, email: email, password: password})
             .then((data) => {

@@ -5,10 +5,16 @@ import axios from 'axios'
 
 function Login() {
   
+    /* These use states are made setEmail hold the info typed into signin page
+       same with the setPassword then sets it to email and password
+       only after the login button is hit which has a onSubmit function */
     const [email, setEmail] = useState("") 
     const [password, setPassword] = useState("")  
 
+    /* Short cut to help me go from page to page 
+       will be used for going to the homepage of website */
     const navigate = useNavigate();
+
 
     const [errors, setErrors] = useState({})
 
@@ -18,12 +24,16 @@ function Login() {
             event.preventDefault();
             setErrors(Validation(email,password));
             if(errors.email === "" && errors.password === ""){
+                /* this post the data entered by the user cross check with the table data 
+                   if the one of the table data matches with the user inputted information  */
                 axios.post('http://localhost:8081/login', {email: email, password: password})
                 .then((data) => {
 
                     console.log(data.data[0].email);
                     console.log(email)
 
+                    /* Checks if the two string emails are the same if so 
+                       Send user to the home Page if not same alert Wrong information was added*/
                     if(data.data[0].email === email){
                         navigate('/home');
                     }else{
