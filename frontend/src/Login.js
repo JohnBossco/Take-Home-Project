@@ -20,10 +20,16 @@ function Login() {
             if(errors.email === "" && errors.password === ""){
                 axios.post('http://localhost:8081/login', {email: email, password: password})
                 .then((data) => {
-                    
-                    navigate('/home');
-                    
-                    console.log(data);
+
+                    console.log(data.data[0].email);
+                    console.log(email)
+
+                    if(data.data[0].email === email){
+                        navigate('/home');
+                    }else{
+                        alert("Wrong information")
+                    }    
+                   console.log(data);
                 })
                 .catch(err => console.log(err))
             }}

@@ -37,15 +37,18 @@ app.post('/login', (req, res) => {
     const email = req.body.email
     const password = req.body.password
 
-    console.log(email, password)
+    // console.log(email, password)
 
     db.query("SELECT * FROM login WHERE `email` = ? AND `password` = ?", [email, password], (err, result) => {
+        console.log(res.length)
         if (err) {
             console.log(err)
-        }if(res.length > 0) {
-            return res.json("success")
+        }if(result.length > 0) {
+            console.log(result)
+            return res.send(result)
         } else {
             res.send({email: email})
+            // console.log(result)
         }
     })
 })

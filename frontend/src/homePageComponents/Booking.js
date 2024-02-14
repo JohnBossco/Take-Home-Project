@@ -18,34 +18,50 @@ const Booking = () => {
   // console.log(defaultFix);
 
  
-
-
+ 
+  /* These use states below are for setting the default date of departure and arrival
+  it will be set for the current day that we are on */
   const [curDeptDate, setDeptDate] = useState(defaultDate);
   const [curArriveDate,setArriveDate] = useState(defaultDate)  
+  
   // console.log(curDeptDate, setDeptDate)
 
+  /* Need to format the dates of both departure and arrival to be accept in the 
+     differenceInDays function */
   let deptDiffernce = curDeptDate.split("-").join(",");
   let arrivalDiffernce = curArriveDate.split("-").join(",")
 
+  /* Calculates the differnce in the departure date and the arrival date*/
   let days = differenceInDays(
     new Date(arrivalDiffernce),
     new Date(deptDiffernce)
   )
-
+  // console.log(days)
+  
+  /* Calculates the price of the cruise */
   let money = (249.99 * days).toFixed(2)
 
   console.log(money)
-
+  
+  /* These use states are used for getting the cruise option on the day we will select*/
   const [americasA,setAmericasA] = useState("");
   const [americasB,setAmericasB] = useState("");
   const [europeA,setEuropeA] = useState("");
   const [europeB,setEuropeB] = useState("");
 
+  /* After the choice of cruise itinerary we will now only choose from that 
+     itinerary */
   const [curEndTrip,setEndTrip] = useState("");
 
-  const [curSelection, setSelection] = useState();
-  console.log(curSelection)
+  console.log(curEndTrip.length)
 
+  /* This use state will be to save the current selected itinerary 
+     and go back and find the data in it.*/
+  const [curSelection, setSelection] = useState();
+
+  // console.log(curSelection)
+  
+  /* The date format needs to be fixed to be properly read in mysql workbench */
   let almostFixDept = curDeptDate.split("-").join(",");
   let almostFixArrive = curArriveDate.split("-").join(",");
 
@@ -69,7 +85,8 @@ const Booking = () => {
         params: {date:date}
       })
       .then((results) => {
-      
+        
+        /* set all the data from database */
         setAmericasA(results.data[0]["Location Americas A"])
         setAmericasB(results.data[0]["Location Americas B"])
         setEuropeA(results.data[0]["Location Europe A"])
@@ -94,7 +111,8 @@ const Booking = () => {
         params: {date:arriveDate}
       })
       .then((results) => {
-      
+        
+        /* this is for the location of the last day on your cruise */
         setEndTrip(results.data[0][`${curSelection}`])
 
         console.log(results.data[0])
@@ -106,6 +124,8 @@ const Booking = () => {
     }
   },[curArriveDate])
 
+
+  
   const handleChangeDept = (e) => {
     e.preventDefault();
     setDeptDate(e.target.value)
@@ -198,7 +218,7 @@ const Booking = () => {
               <strong>Total Price</strong>
             </p>
             <div>
-              <div><strong>${money}</strong></div>
+              <div><strong>{days > 0 ? `$${money}` : "$0"}</strong></div>
             </div>
           </div>
 
