@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Validation from"./LoginValidation"
-import axios from 'axios'
+import axios from 'axios' /* used to send info servers or other things*/
 
 function Login() {
   
@@ -15,7 +15,8 @@ function Login() {
        will be used for going to the homepage of website */
     const navigate = useNavigate();
 
-
+    /* use state to check if  there are any errors if so
+       set the errors */
     const [errors, setErrors] = useState({})
 
 

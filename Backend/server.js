@@ -48,6 +48,8 @@ app.post("/signup", (req, res) => {
   
 });
 
+/* This is for when the client is ready to book his trip data of his booked trip will be sent to 
+   the mysql database and access the table bookedtrips */
 app.post("/bookedtrips", (req, res) =>{
 
     const accountName = req.body.accountName;
@@ -57,6 +59,7 @@ app.post("/bookedtrips", (req, res) =>{
     const destinationTo = req.body.destinationTo;
     const totalPrice = req.body.totalPrice;
   
+   /* This query inserts the chosen material into the database */
     db.query(
       "insert into bookedtrips (accountName,deptDate,deptFrom,arriveDate,destinationTo,totalPrice) VALUES (?,?,?,?,?,?)",
       [accountName, deptDate, deptFrom, arriveDate, destinationTo, totalPrice],
@@ -64,7 +67,7 @@ app.post("/bookedtrips", (req, res) =>{
         if (err) {
           console.log(err);
         } else {
-          res.send(result);
+          (console.log(result));
         }
       }
     );

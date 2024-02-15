@@ -1,17 +1,21 @@
 import React, {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Validation from './SignupValidation'
-import axios from 'axios'
+import axios from 'axios' /* used to send info servers or other things*/
 
  
 function Signup() {
  
+    /* These useStates are for when the user enters there information
+       and will set them */
     const [username, setUserName] = useState("") 
     const [password, setPassword] = useState("") 
     const [email, setEmail] = useState("") 
 
     const navigate = useNavigate();
 
+    /* These will check to see if there are any errors if so
+       then they will be stored in errors */
     const [errors, setErrors] = useState({})
 
       const handleSubmit = (event) => {

@@ -58,7 +58,7 @@ const Booking = () => {
      console.log(curStartTrip)
 
 
-  // console.log(curEndTrip.length)
+  console.log(curEndTrip)
 
   /* This use state will be to save the current selected itinerary 
      and go back and find the data in it.*/
@@ -66,6 +66,10 @@ const Booking = () => {
   const [curSelection, setSelection] = useState();
 
   // console.log(curSelection)
+
+
+  const [isInputDisabled, setIsInputDisabled] = useState(true);
+
   
   /* The date format needs to be fixed to be properly read in mysql workbench */
   let almostFixDept = curDeptDate.split("-").join(",");
@@ -91,7 +95,7 @@ const Booking = () => {
   
 
 
-  /*  */
+  /* T */
   useEffect(() => {
     /*  */
     if(curDeptDate.length > 0) {
@@ -100,7 +104,7 @@ const Booking = () => {
       })
       .then((results) => {
         
-        console.log(results.data[0][`${curSelection}`])
+        // console.log(results.data[0][`${curSelection}`])
         /* This is for the location of the start Trip */
         setStartTrip(results.data[0][`${curSelection}`])
 
@@ -146,7 +150,8 @@ const Booking = () => {
   const handleChangeDept = (e) => {
     e.preventDefault();
     setDeptDate(e.target.value)
-  
+
+    setIsInputDisabled(curDeptDate === "")
   }
 
   /* This is for handling the Change of the Arrival date */
@@ -162,6 +167,7 @@ const Booking = () => {
 
     console.log(accountName)
 
+  
     axios.post("http://localhost:8081/bookedtrips", 
     {accountName: accountName, deptDate:date, deptFrom:curEndTrip, 
       arriveDate: arriveDate, destinationTo : curEndTrip, totalPrice: money})
@@ -169,6 +175,8 @@ const Booking = () => {
         console.log(data);
     })
     .catch(err => console.log(err));
+    alert("Your Cruise Is Booked!")
+    window.location.reload();
   }
 
   console.log(accountName,date,curStartTrip,arriveDate,curEndTrip,money)
@@ -201,7 +209,6 @@ const Booking = () => {
               onChange={handleChangeDept}
               type="date"
               name="date"
-              required
               className="outline-none p-2 w-full"
             />
           </div>
@@ -212,7 +219,7 @@ const Booking = () => {
               <p>Departing From</p>
             </strong>
             <div>
-              <select onChange={(e) => setSelection(e.target.value)} disabled={isItSameDate} name="from" id="from" className="outline-none p-2 w-full">
+              <select onChange={(e) => setSelection(e.target.value)} disabled={isItSameDate} required name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
                 <option value="Location Americas A"> {americasA}  </option>
                 <option value="Location Americas B">{americasB}</option>
@@ -229,6 +236,7 @@ const Booking = () => {
             </strong>
             <input
               onChange={handleChangeArrive}
+              disabled = {isInputDisabled}
               type="date"
               name="date"
               required
@@ -242,7 +250,7 @@ const Booking = () => {
               <p>Destination To</p>
             </strong>
             <div>
-              <select disabled={isItSameDateArrive} name="from" id="from" className="outline-none p-2 w-full">
+              <select disabled={isItSameDateArrive} required name="from" id="from" className="outline-none p-2 w-full">
                 <option value="">Please Select</option>
                 <option value="Location Americas A">{curEndTrip}</option>
               </select>
@@ -255,7 +263,7 @@ const Booking = () => {
               <strong>Total Price</strong>
             </p>
             <div>
-              <div><strong>{days > 0 ? `$${money}` : "$0"}</strong></div>
+              <div><strong>{days && curEndTrip != ""> 0 ? `$${money}` :"$0" }</strong></div>
             </div>
           </div>
 
